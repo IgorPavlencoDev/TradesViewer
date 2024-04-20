@@ -4,12 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TradesViewer
+namespace TradesViewer.Tools.CLI
 {
-    internal class Program
+    internal class ConsoleInterface
     {
-        static void Main(string[] args)
-        {
-        }
     }
 }
