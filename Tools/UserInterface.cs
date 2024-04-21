@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,12 +12,17 @@ namespace TradesViewer.Tools
     internal enum StageOfUI
     {
         Start,
-        Ready
+        DiagnosticsPing,
+        DiagnosticsTime,
+        DiagnosticsExchangeInfo,
+        AllowedToWork
     }
 
     //There is abstract layer of user interface
     public class UserInterface
     {
+        private static StageOfUI _currentStage = StageOfUI.Start;
+
 #if !CLI && !GUI
 #error SET DEFINITION TO SELECT USER INTERACTION TYPE
 #elif CLI
@@ -36,10 +42,42 @@ namespace TradesViewer.Tools
 
         public static void UserInterfaceThread()
         {
-            InitialiseUI();
+            bool FlagInDebugPurposes = true;
+#warning clear debug garbage
+            while (FlagInDebugPurposes)
+            {
+                switch(_currentStage)
+                {
+                    case StageOfUI.Start:
+                        InitialiseUI();
+                        _userInterface.ChangeInfo("Initial checks, please wait...");
+                        _userInterface.Refresh();
+                        _currentStage = StageOfUI.DiagnosticsPing; 
+                        break;
 
-            _userInterface.ChangeInfo("Initial checks, please wait...");
-            _userInterface.Refresh();
+                    case StageOfUI.DiagnosticsPing:
+                        _currentStage = StageOfUI.DiagnosticsTime;
+                        break;
+
+                    case StageOfUI.DiagnosticsTime:
+                        _currentStage = StageOfUI.DiagnosticsExchangeInfo;
+                        break;
+
+                    case StageOfUI.DiagnosticsExchangeInfo:
+                        _currentStage = StageOfUI.AllowedToWork;
+                        break;
+
+                    case StageOfUI.AllowedToWork:
+                        _userInterface.ChangeInfo("All seems to be fine!");
+                        _userInterface.Refresh();
+                        FlagInDebugPurposes = false;
+                        break;
+
+                    default:
+                        Assert.Fail("Something wrong in switch case in UserInterface.cs");
+                        break;
+                }
+            }
         }
     }
 }
