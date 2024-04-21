@@ -33,6 +33,8 @@ namespace TradesViewer.Tools
         private static void InitialiseUI()
         {
             _userInterface = new GraphicInterface();
+            _eventNewInfoTextPlaced = new EventWaitHandle(false, EventResetMode.AutoReset);
+            SignalsManager.EventUIReady.Set();
         }
 #endif
 
