@@ -12,13 +12,25 @@ namespace TradesViewer.Shared
     {
         public static EventWaitHandle _eventPingGETDone { get; private set; }
         public static EventWaitHandle _eventTimeGETDone { get; private set; }
-        public static EventWaitHandle _exchangeInfoGETDone { get; private set; }
+        public static EventWaitHandle _eventExchangeInfoGETDone { get; private set; }
+
+        public static EventWaitHandle _eventStartPingGETCheck { get; private set; }
+        public static EventWaitHandle _eventStartTimeGETCheck { get; private set; }
+        public static EventWaitHandle _eventStartExchangeInfoGETCheck { get; private set; }
+
+        public static EventWaitHandle _eventCriticalError { get; private set; }
 
         public static void Initialisation()
         {
             _eventPingGETDone = new EventWaitHandle(false, EventResetMode.AutoReset);
             _eventTimeGETDone = new EventWaitHandle(false, EventResetMode.AutoReset);
-            _exchangeInfoGETDone = new EventWaitHandle(false, EventResetMode.AutoReset);
+            _eventExchangeInfoGETDone = new EventWaitHandle(false, EventResetMode.AutoReset);
+
+            _eventStartPingGETCheck = new EventWaitHandle(false, EventResetMode.AutoReset);
+            _eventStartTimeGETCheck = new EventWaitHandle(false, EventResetMode.AutoReset);
+            _eventStartExchangeInfoGETCheck = new EventWaitHandle(false, EventResetMode.AutoReset);
+
+            _eventCriticalError = new EventWaitHandle(false, EventResetMode.AutoReset);
         }
     }
 }

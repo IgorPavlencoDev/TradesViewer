@@ -31,13 +31,17 @@ namespace TradesViewer.Core
 
             } catch (Exception e)
             {
-                Console.WriteLine("An critical error occurred while initializing the program: " + e);
+                Console.WriteLine("An critical error occurred while initializing the program: " + e.ToString());
                 return;
             }
 
             _httpClient.Start();
             _userInterface.Start();
             _diagnostics.Start();
+
+            SignalsManager._eventCriticalError.WaitOne();
+            Console.WriteLine("App terminated.");
+            return;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -21,9 +22,10 @@ namespace TradesViewer.Client
         private const string _timeURL = "https://data-api.binance.vision/api/v3/time";
         private const string _exchangeInfoURL = "https://data-api.binance.vision/api/v3/exchangeInfo?permissions=SPOT";
 
-        private static HttpResponseMessage httpResponse;
+        private static HttpResponseMessage _httpResponse;
 
-        private static Task<HttpResponseMessage> httpMessageHandler;
+        private static Task<HttpResponseMessage> _httpMessageHandler;
+        private static Task<string> _readMessageHandler;
 
         private static void InitialiseHttpClient()
         {
@@ -32,21 +34,42 @@ namespace TradesViewer.Client
 
         public static void HttpClientThread()
         {
-            InitialiseHttpClient();
+            try
+            {
+                InitialiseHttpClient();
 
-            httpMessageHandler = _client.GetAsync(_pingURL);
-            httpMessageHandler.Wait();
-            SignalsManager._eventPingGETDone.Set();
+                SignalsManager._eventStartPingGETCheck.WaitOne();
+                _httpMessageHandler = _client.GetAsync(_pingURL);
+                _httpMessageHandler.Wait();
+                _httpResponse = _httpMessageHandler.Result;
+                _httpResponse.EnsureSuccessStatusCode();
+                SignalsManager._eventPingGETDone.Set();
 
-            httpMessageHandler = _client.GetAsync(_timeURL);
-            httpMessageHandler.Wait();
-            SignalsManager._eventTimeGETDone.Set();
+                SignalsManager._eventStartTimeGETCheck.WaitOne();
+                _httpMessageHandler = _client.GetAsync(_timeURL);
+                _httpMessageHandler.Wait();
 #warning TODO time check
+                _httpResponse = _httpMessageHandler.Result;
+                _httpResponse.EnsureSuccessStatusCode();
+                SignalsManager._eventTimeGETDone.Set();
 
-            httpMessageHandler = _client.GetAsync(_exchangeInfoURL);
-            httpMessageHandler.Wait();
-            SignalsManager._exchangeInfoGETDone.Set();
+                SignalsManager._eventStartExchangeInfoGETCheck.WaitOne();
+                _httpMessageHandler = _client.GetAsync(_exchangeInfoURL);
+                _httpMessageHandler.Wait();
+                _httpResponse = _httpMessageHandler.Result;
+                _httpResponse.EnsureSuccessStatusCode();
+                SignalsManager._eventExchangeInfoGETDone.Set();
 
+                _readMessageHandler = _httpResponse.Content.ReadAsStringAsync();
+                _readMessageHandler.Wait();
+                string messageText = _readMessageHandler.Result;
+                DataManager.ExchangeInfo = JsonConvert.DeserializeObject<ExchangeInfoCarrier>(messageText);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("An critical error occurred while initializing the program: " + e.ToString());
+                SignalsManager._eventCriticalError.Set();
+            }
         }
     }
 }

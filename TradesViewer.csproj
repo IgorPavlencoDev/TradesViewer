@@ -63,6 +63,7 @@
     <Compile Include="Core\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Shared\DataManager.cs" />
+    <Compile Include="Shared\ExchangeInfoCarrier.cs" />
     <Compile Include="Shared\SignalsManager.cs" />
     <Compile Include="Tests\Diagnostics.cs" />
     <Compile Include="Tools\CLI\ConsoleInterface.cs" />
