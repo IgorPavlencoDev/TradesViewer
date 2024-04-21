@@ -35,13 +35,25 @@ namespace TradesViewer.Core
                 return;
             }
 
-            _httpClient.Start();
-            _userInterface.Start();
-            _diagnostics.Start();
+            TimeSpan timeOut = new TimeSpan(0, 1, 0);
+            bool isTimeOut = false;
 
-            SignalsManager._eventCriticalError.WaitOne();
-            Console.WriteLine("App terminated.");
-            return;
+            _userInterface.Start();
+            isTimeOut = !SignalsManager.EventUIReady.WaitOne(timeOut);
+            if (!isTimeOut)
+            {
+                _httpClient.Start();
+                _diagnostics.Start();
+
+                SignalsManager.EventCriticalError.WaitOne();
+                Console.WriteLine("App terminated.");
+                return;
+            }
+            else
+            {
+                Console.WriteLine("Error: something wrong with UI");
+                return;
+            }
         }
     }
 }

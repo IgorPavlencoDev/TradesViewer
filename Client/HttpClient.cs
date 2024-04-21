@@ -38,27 +38,27 @@ namespace TradesViewer.Client
             {
                 InitialiseHttpClient();
 
-                SignalsManager._eventStartPingGETCheck.WaitOne();
+                SignalsManager.EventStartPingGETCheck.WaitOne();
                 _httpMessageHandler = _client.GetAsync(_pingURL);
                 _httpMessageHandler.Wait();
                 _httpResponse = _httpMessageHandler.Result;
                 _httpResponse.EnsureSuccessStatusCode();
-                SignalsManager._eventPingGETDone.Set();
+                SignalsManager.EventPingGETDone.Set();
 
-                SignalsManager._eventStartTimeGETCheck.WaitOne();
+                SignalsManager.EventStartTimeGETCheck.WaitOne();
                 _httpMessageHandler = _client.GetAsync(_timeURL);
                 _httpMessageHandler.Wait();
 #warning TODO time check
                 _httpResponse = _httpMessageHandler.Result;
                 _httpResponse.EnsureSuccessStatusCode();
-                SignalsManager._eventTimeGETDone.Set();
+                SignalsManager.EventTimeGETDone.Set();
 
-                SignalsManager._eventStartExchangeInfoGETCheck.WaitOne();
+                SignalsManager.EventStartExchangeInfoGET.WaitOne();
                 _httpMessageHandler = _client.GetAsync(_exchangeInfoURL);
                 _httpMessageHandler.Wait();
                 _httpResponse = _httpMessageHandler.Result;
                 _httpResponse.EnsureSuccessStatusCode();
-                SignalsManager._eventExchangeInfoGETDone.Set();
+                SignalsManager.EventExchangeInfoGETDone.Set();
 
                 _readMessageHandler = _httpResponse.Content.ReadAsStringAsync();
                 _readMessageHandler.Wait();
@@ -68,7 +68,7 @@ namespace TradesViewer.Client
             catch (Exception e)
             {
                 Console.WriteLine("An critical error occurred while initializing the program: " + e.ToString());
-                SignalsManager._eventCriticalError.Set();
+                SignalsManager.EventCriticalError.Set();
             }
         }
     }
