@@ -11,6 +11,8 @@ namespace TradesViewer.Core
     //There is core part of the program
     internal class Program
     {
+        private const string _timeOutText = "Error: Application startup timeout.";
+
         private static Thread _userInterface;
 
         private static Thread _httpClient;
@@ -37,6 +39,8 @@ namespace TradesViewer.Core
 
             TimeSpan timeOut = new TimeSpan(0, 1, 0);
             bool isTimeOut = false;
+#warning TODO put timeout size in .ini file
+
 
             _userInterface.Start();
             isTimeOut = !SignalsManager.EventUIReady.WaitOne(timeOut);
@@ -45,7 +49,17 @@ namespace TradesViewer.Core
                 _httpClient.Start();
                 _diagnostics.Start();
 
-                SignalsManager.EventCriticalError.WaitOne();
+                isTimeOut = !SignalsManager.EventApplicationReadyToWork.WaitOne(timeOut);
+                if (isTimeOut)
+                {
+                    Console.WriteLine(_timeOutText);
+                }
+                else 
+                {
+                    UserInterface.ResetUI();
+                    SignalsManager.EventCriticalError.WaitOne();
+                }
+
                 Console.WriteLine("App terminated.");
                 return;
             }

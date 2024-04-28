@@ -15,6 +15,8 @@ namespace TradesViewer.Tools.CLI
         private string _suggestions;
         private string _tracker;
 
+        private const string _line_Separator = "__________________________________________________________";
+
         //better interface in progress
         public void ChangeInfo(string s) { _info = s; }
         public void ChangeSecondaryInfo(string s) { _secondaryInfo = s; }
@@ -26,29 +28,28 @@ namespace TradesViewer.Tools.CLI
         { 
             Console.Clear();
 
-            if (!string.IsNullOrEmpty(_info))
+            if (_info != null)
             {
                 Console.WriteLine(_info);
             }
-
-            if (!string.IsNullOrEmpty(_secondaryInfo))
+            if (_secondaryInfo != null)
             {
-                Console.WriteLine(_secondaryInfo);
+                Console.WriteLine("\n" + "\n" + _secondaryInfo + "\n" + _line_Separator);
             }
 
-            if (!string.IsNullOrEmpty(_userInput))
+            if (_userInput != null)
             {
-                Console.WriteLine(_userInput);
+                Console.WriteLine("\n" + _userInput);
             }
 
-            if (!string.IsNullOrEmpty(_suggestions))
+            if (_suggestions != null)
             {
-                Console.WriteLine(_suggestions);
+                Console.WriteLine("\n" + _suggestions + "\n" + _line_Separator);
             }
 
-            if (!string.IsNullOrEmpty(_tracker))
+            if (_tracker != null)
             {
-                Console.WriteLine(_tracker);
+                Console.WriteLine("\n" + _tracker);
             }
         }
     }

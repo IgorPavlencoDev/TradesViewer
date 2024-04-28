@@ -20,6 +20,7 @@ namespace TradesViewer.Shared
         public static EventWaitHandle EventStartTimeGETCheck { get; private set; }
         public static EventWaitHandle EventStartExchangeInfoGET { get; private set; }
 
+        public static EventWaitHandle EventApplicationReadyToWork { get; private set; }
         public static EventWaitHandle EventCriticalError { get; private set; }
 
         public static void Initialisation()
@@ -34,6 +35,7 @@ namespace TradesViewer.Shared
             EventStartTimeGETCheck = new EventWaitHandle(false, EventResetMode.AutoReset);
             EventStartExchangeInfoGET = new EventWaitHandle(false, EventResetMode.AutoReset);
 
+            EventApplicationReadyToWork = new EventWaitHandle(false, EventResetMode.ManualReset);
             EventCriticalError = new EventWaitHandle(false, EventResetMode.AutoReset);
         }
     }

@@ -14,10 +14,10 @@ namespace TradesViewer.Tests
 
 #warning TODO remake via .ini file
         private const string _basicStartCheckText = "Initial checks, please wait...";
-        private const string _pingCheckDoneText = "\nPing done succesful!";
-        private const string _timeCheckDoneText = "\nServer time is correct!";
-        private const string _exchangeInfoCheckDoneText = "\nData from exchange received!";
-        private const string _allFineText = "\nEverything seems to be fine!";
+        private const string _pingCheckDoneText = "\nPing done succesful! ";
+        private const string _timeCheckDoneText = "Server time is correct! ";
+        private const string _exchangeInfoCheckDoneText = "Data from exchange received! ";
+        private const string _allFineText = "\nEverything seems to be fine! Launching app!";
 
         private const string _timeOutText = "Connection timeout. Please, check internet connection and launch app again.";
 
@@ -98,6 +98,7 @@ namespace TradesViewer.Tests
                                                         _timeCheckDoneText +
                                                         _exchangeInfoCheckDoneText +
                                                         _allFineText);
+                            SignalsManager.EventApplicationReadyToWork.Set();
                             isDiagnosticsInProgress = false;
                             break;
 
