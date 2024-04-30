@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Security.Policy;
 using System.Text;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using TradesViewer.Shared;
@@ -62,7 +63,7 @@ namespace TradesViewer.Client
                 _readMessageHandler = _httpResponse.Content.ReadAsStringAsync();
                 _readMessageHandler.Wait();
                 string messageText = _readMessageHandler.Result;
-                DataManager.ExchangeInfo = JsonConvert.DeserializeObject<ExchangeInfoCarrier>(messageText);
+                DataManager.ExchangeInfo = JsonSerializer.Deserialize<ExchangeInfoCarrier>(messageText);
             }
             catch (Exception e)
             {

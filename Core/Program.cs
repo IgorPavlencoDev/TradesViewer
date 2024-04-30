@@ -28,7 +28,7 @@ namespace TradesViewer.Core
                 SignalsManager.Initialisation();
 
                 _userInterface = new Thread(UserInterface.UserInterfaceThread);
-                _httpClient = new Thread(HttpClient.HttpClientThread);
+                _httpClient = new Thread(TradesViewer.Client.HttpClient.HttpClientThread);
                 _diagnostics = new Thread(Diagnostics.DiagnosticsThread);
 
             } catch (Exception e)

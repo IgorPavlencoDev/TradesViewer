@@ -102,7 +102,8 @@ namespace TradesViewer.Tests
                             break;
 
                         default:
-                            //Assert.Fail("Something wrong in switch case in UserInterface.cs");
+#warning                            Assert.Fail("Something wrong in switch case in UserInterface.cs");
+                            throw new Exception("Something wrong in switch case in UserInterface.cs");
                             break;
                     }
                 }
