@@ -76,4 +76,12 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>SET _tgt=$(TargetFramework)
+ECHO %25_tgt%25
+IF NOT "%25_tgt:~0,7%25" == "netcore" (
+    cd $(ProjectDir)\obj
+    DEL project.assets.json
+)</PreBuildEvent>
+  </PropertyGroup>
 </Project>
