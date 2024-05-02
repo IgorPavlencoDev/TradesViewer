@@ -2,13 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace TradesViewer.Tools.CLI
 {
     //There is CLI technical details
     public class ConsoleInterface
     {
+        [DllImport("User32.dll")]
+        private static extern short GetAsyncKeyState(int vKey);
+
+        private Thread _inputThread;
+
         private string _info;
         private string _secondaryInfo;
         private string _userInput;
@@ -23,6 +31,19 @@ namespace TradesViewer.Tools.CLI
         public void ChangeUserInput(string s) { _userInput = s; }
         public void ChangeSuggestions(string s) { _suggestions = s; }
         public void ChangeTracker(string s) { _tracker = s; }
+
+        public void Initialize()
+        {
+            _inputThread = new Thread(WaitingInputThread);
+            _inputThread.Start();
+        }
+
+        private void WaitingInputThread()
+        {
+            while (true)
+            {
+            }
+        }
 
         public void Refresh() 
         { 
