@@ -19,7 +19,7 @@ namespace TradesViewer.Tools
 
         private static EventWaitHandle _eventNewInfoTextPlaced;
         private static string _infoOutputText;
-        private const string _infoDefaultText =  "Welcome to TradesViewer 1.0.\n\n" +
+        private const string _infoDefaultText =  "Welcome to TradesViewer 0.01.\n\n" +
                                                  "Please start entering your currency to view the app's suggestions.\n" +
                                                  "You can also enter the up arrow or down arrow to change the amount of saved trades.\n" +
                                                  "But this option does not change after you select the first trading pair\n" +
@@ -58,14 +58,25 @@ namespace TradesViewer.Tools
             _eventNewTrackerTextPlaced = new EventWaitHandle(false, EventResetMode.AutoReset);
 
             SignalsManager.EventUIReady.Set();
+
+            _userInterface.Initialize();
         }
 #elif GUI
         private static GraphicInterface _userInterface;
         private static void InitialiseUI()
         {
             _userInterface = new GraphicInterface();
+
+            _eventNewUIInteraction = new EventWaitHandle(false, EventResetMode.AutoReset);
             _eventNewInfoTextPlaced = new EventWaitHandle(false, EventResetMode.AutoReset);
+            _eventNewSecondaryInfoTextPlaced = new EventWaitHandle(false, EventResetMode.AutoReset);
+            _eventNewUserInputTextPlaced = new EventWaitHandle(false, EventResetMode.AutoReset);
+            _eventNewSuggestionsTextPlaced = new EventWaitHandle(false, EventResetMode.AutoReset);
+            _eventNewTrackerTextPlaced = new EventWaitHandle(false, EventResetMode.AutoReset);
+
             SignalsManager.EventUIReady.Set();
+
+            _userInterface.Initialize();
         }
 #endif
 
